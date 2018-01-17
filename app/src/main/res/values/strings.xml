@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MyBluetooth</string>
+    <string name="string_ble_scan_wait_title">BLE</string>
+    <string name="string_ble_scan_wait_txt">스캔중...</string>
+    <string name="string_ble_enable_no">BLE 사용 불가능</string>
+    <string name="string_filter_action_send_to_service">com.lunatk.mybluetooth.SEND_TO_SERVICE</string>
+    <string name="string_filter_action_send_to_activity">com.lunatk.mybluetooth.SEND_TO_ACTIVITY</string>
+    <string name="string_ble_find_device">디바이스 찾음</string>
+</resources>

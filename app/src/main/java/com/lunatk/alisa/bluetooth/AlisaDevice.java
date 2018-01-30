@@ -10,6 +10,7 @@ import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
+import com.lunatk.alisa.network.RequestManager;
 import com.lunatk.alisa.util.UUIDHelper;
 
 import java.util.Arrays;
@@ -28,10 +29,10 @@ class AlisaDevice extends BluetoothGattCallback {
     private boolean connected = false;
     private boolean connecting = false;
     BluetoothGatt gatt;
-    private BluetoothService mService;
+    private AlisaService mService;
     private Context mContext;
 
-    public AlisaDevice(BluetoothService service, BluetoothDevice device) {
+    public AlisaDevice(AlisaService service, BluetoothDevice device) {
         this.mService = service;
         this.device = device;
         mContext = service.getApplicationContext();
@@ -191,7 +192,8 @@ class AlisaDevice extends BluetoothGattCallback {
                                 + "\n지자기y : " + (data_buffer[18] + data_buffer[19] * 256)
                                 + "\n지자기z : " + (data_buffer[20] + data_buffer[21] * 256);
 
-                        mService.broadcastData(datastr);
+                        mService.broadcastData(data_buffer);
+                        RequestManager.sendSensorData(mService.getHandler(), datastr);
 
                         data_null_index = 0;
                     }

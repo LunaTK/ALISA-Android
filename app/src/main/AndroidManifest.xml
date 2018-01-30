@@ -28,7 +28,7 @@
         </activity>
 
         <service
-            android:name="com.lunatk.alisa.bluetooth.BluetoothService"/>
+            android:name="com.lunatk.alisa.bluetooth.AlisaService"/>
     </application>
 
 </manifest>

@@ -7,13 +7,20 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.lunatk.alisa.network.OPCode;
+import com.lunatk.alisa.network.RequestManager;
 import com.lunatk.mybluetooth.R;
 
 import java.util.List;
@@ -22,14 +29,18 @@ import java.util.List;
  * Created by LunaTK on 2018. 1. 15..
  */
 
-public class BluetoothService extends Service {
+public class AlisaService extends Service {
 
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothLeScanner mBLEScanner;
+    private BluetoothServiceReciever mReceiver;
 
     private AlisaDevice alisaDevice;
 
-    private static final String TAG="BluetoothService";
+    private RequestManager requestManager;
+    private Handler sHandler;
+
+    private static final String TAG="AlisaService";
 
     @Override
     public void onCreate() {
@@ -37,10 +48,23 @@ public class BluetoothService extends Service {
         Log.d(TAG,"onCreated");
     }
 
+    public Handler getHandler() {
+        return sHandler;
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG,"onStartCommand");
+
         initBluetoothAdapter();
+
+        if(!RequestManager.getInstance().isAlive()) {
+            requestManager = RequestManager.getInstance();
+            requestManager.start();
+        }
+
+        registerReceiver();
+        sHandler = new ServiceHandler();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -52,6 +76,7 @@ public class BluetoothService extends Service {
         if(alisaDevice != null && alisaDevice.isConnected()){
             alisaDevice.disconnect();
         }
+        unregisterReceiver();
     }
 
     @Nullable
@@ -155,10 +180,44 @@ public class BluetoothService extends Service {
         sendBroadcast(sendIntent);
     }
 
-    public void broadcastData(String data){
+    public void broadcastData(int[] data){
         Intent sendIntent = new Intent(getResources().getString(R.string.string_filter_action_send_to_activity));
         sendIntent.putExtra("data", data);
         sendBroadcast(sendIntent);
+    }
+
+    private void registerReceiver() {
+        if(mReceiver !=null) return;
+        final IntentFilter filter = new IntentFilter();
+        filter.addAction(getResources().getString(R.string.string_filter_action_send_to_service));
+
+        mReceiver = new BluetoothServiceReciever();
+        registerReceiver(mReceiver,filter);
+    }
+
+    private void unregisterReceiver(){
+        if(mReceiver != null)
+            unregisterReceiver(mReceiver);
+    }
+
+    class ServiceHandler extends Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch(msg.what){
+                case OPCode.SENSOR_DATA:
+                    break;
+            }
+        }
+    }
+
+    class BluetoothServiceReciever extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(R.string.string_filter_action_send_to_service)){
+                //TODO : 센서한테 업데이트 정보 보내주기
+            }
+        }
     }
 
 

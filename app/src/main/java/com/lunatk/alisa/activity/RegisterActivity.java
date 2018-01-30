@@ -5,10 +5,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import com.lunatk.alisa.network.NetworkThread;
+import com.lunatk.alisa.network.RequestManager;
 import com.lunatk.mybluetooth.R;
 
 /**
@@ -34,7 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                setResult(msg.what);
+                setResult(msg.arg1);
                 finish();
             }
         };
@@ -42,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void register(View v){
-        NetworkThread.requestRegister(mainHandler, et_id.getText().toString(), et_pw.getText().toString());
+        RequestManager.requestRegister(mainHandler, et_id.getText().toString(), et_pw.getText().toString());
     }
+
 }

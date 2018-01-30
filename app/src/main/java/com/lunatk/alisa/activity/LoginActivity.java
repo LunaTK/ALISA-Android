@@ -1,5 +1,7 @@
 package com.lunatk.alisa.activity;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,8 +13,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.lunatk.alisa.network.NetworkThread;
 import com.lunatk.alisa.network.OPCode;
+import com.lunatk.alisa.network.RequestManager;
 import com.lunatk.mybluetooth.R;
 
 /**
@@ -39,24 +41,37 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                if(msg.what == OPCode.OK){
+                if(msg.what == OPCode.REQ_LOGIN && msg.arg1 == OPCode.OK){
+                    Toast.makeText(LoginActivity.this, "Login Success",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Login Failed",Toast.LENGTH_SHORT).show();
                 }
             }
         };
 
-        NetworkThread.getInstance().start();
+        isServiceRunning();
     }
 
     public void login(View v){
-        NetworkThread.requestLogin(mainHandler,et_id.getText().toString(), et_pw.getText().toString());
+        RequestManager.requestLogin(mainHandler, et_id.getText().toString(), et_pw.getText().toString());
     }
 
     public void register(View v){
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivityForResult(intent, RegisterActivity.ACTIVITY_CODE);
+    }
+
+    public boolean isServiceRunning() {
+        ActivityManager manager = (ActivityManager) this.getSystemService(Activity.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            Log.d(TAG,service.service.getClassName());
+            if(service.service.getClassName().equals("com.lunatk.alisa.bluetooth.AlisaService"))
+                return true;
+        }
+        return false;
     }
 
     @Override

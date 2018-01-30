@@ -21,8 +21,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.lunatk.alisa.bluetooth.BluetoothService;
-import com.lunatk.alisa.network.NetworkThread;
+import com.lunatk.alisa.bluetooth.AlisaService;
+import com.lunatk.alisa.network.RequestManager;
 import com.lunatk.mybluetooth.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
     }
     //서비스 시작.
     public void startServiceMethod(View v){
-        Intent service = new Intent(this, BluetoothService.class);
+        Intent service = new Intent(this, AlisaService.class);
         startService(service);
     }
 
@@ -256,24 +256,34 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG,intent.getAction());
             if(intent.getAction().equals(getResources().getString(R.string.string_filter_action_send_to_activity))){
-                String status, data;
+                String status;
+                int[] data_buffer;
                 status = intent.getStringExtra("status");
-                data = intent.getStringExtra("data");
-                Log.d(TAG,"status : " + status + ", data : " + data);
+                data_buffer = intent.getIntArrayExtra("data");
                 if(status!=null){
                     setStatus(status);
                 }
-                if(data!=null){
-                    setData(data);
-                    NetworkThread.sendSensorData(mainHandler,data);
+                if(data_buffer!=null){
+
+                    String datastr = "홀센서 : " + (data_buffer[0] + data_buffer[1] * 256)
+                            + "\n온도 : " + ((data_buffer[2] + data_buffer[3] * 256) * 0.0078125)
+                            + "\n가속도x : " + (data_buffer[4] + data_buffer[5] * 256)
+                            + "\n가속도y : " + (data_buffer[6] + data_buffer[7] * 256)
+                            + "\n가속도z : " + (data_buffer[8] + data_buffer[9] * 256)
+                            + "\n자이로x : " + (data_buffer[10] + data_buffer[11] * 256)
+                            + "\n자이로y : " + (data_buffer[12] + data_buffer[13] * 256)
+                            + "\n자이로z : " + (data_buffer[14] + data_buffer[15] * 256)
+                            + "\n지자기x : " + (data_buffer[16] + data_buffer[17] * 256)
+                            + "\n지자기y : " + (data_buffer[18] + data_buffer[19] * 256)
+                            + "\n지자기z : " + (data_buffer[20] + data_buffer[21] * 256);
+                    setData(datastr);
                 }
             }
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case 1:
 

@@ -1,5 +1,10 @@
 package com.lunatk.alisa.bluetooth;
 
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -9,18 +14,21 @@ import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Bundle;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.lunatk.alisa.network.OPCode;
 import com.lunatk.alisa.network.RequestManager;
+import com.lunatk.alisa.util.Config;
 import com.lunatk.mybluetooth.R;
 
 import java.util.List;
@@ -37,8 +45,13 @@ public class AlisaService extends Service {
 
     private AlisaDevice alisaDevice;
 
+    private ScanningThread scanningThread;
+
     private RequestManager requestManager;
     private Handler sHandler;
+    private int startId;
+    private boolean loggedIn = false;
+    SharedPreferences sharedPreferences;
 
     private static final String TAG="AlisaService";
 
@@ -46,6 +59,7 @@ public class AlisaService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG,"onCreated");
+//        unregisterRestartAlarm();
     }
 
     public Handler getHandler() {
@@ -55,28 +69,73 @@ public class AlisaService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG,"onStartCommand");
-
+        this.startId = startId;
         initBluetoothAdapter();
 
-        if(!RequestManager.getInstance().isAlive()) {
-            requestManager = RequestManager.getInstance();
+        requestManager = RequestManager.getInstance();
+        if(!requestManager.isAlive() && !requestManager.isRunning()) {
             requestManager.start();
         }
 
-        registerReceiver();
         sHandler = new ServiceHandler();
-        return super.onStartCommand(intent, flags, startId);
+        loginCheck();
+
+        return super.onStartCommand(intent,flags,startId);
+    }
+
+    private void loginCheck() {
+        String id, pw;
+        sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        id = sharedPreferences.getString("user_id", null);
+        pw = sharedPreferences.getString("user_pass", null);
+        RequestManager.requestLogin(sHandler, id, pw);
+        Log.d(TAG, "Login Info : " + id + ", " + pw);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG,"onDestroy");
-        mBLEScanner.stopScan(mScanCallback);
+//        mBLEScanner.stopScan(mScanCallback);
         if(alisaDevice != null && alisaDevice.isConnected()){
             alisaDevice.disconnect();
         }
+        stopScanning();
+        requestManager.stopRunning();
         unregisterReceiver();
+//        if(loggedIn) registerRestartAlarm();
+//        stopForeground(true);
+//        stopSelf();
+    }
+
+    public void startScanning(){
+        if(scanningThread!=null && scanningThread.isScanning) stopScanning();
+        scanningThread = new ScanningThread();
+        scanningThread.start();
+    }
+
+    public void stopScanning() {
+        if(scanningThread!= null && scanningThread.isScanning){
+            scanningThread.isScanning = false;
+        }
+    }
+
+    private void setImmortal(){
+        Log.d(TAG,"setImmortal");
+        startForeground(1,new Notification());
+
+        NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        Notification notification;
+        notification = new Notification.Builder(getApplicationContext())
+                .setContentTitle("ALISA")
+                .setContentText("ALISA 서비스가 실행중입니다")
+                .setSmallIcon(R.mipmap.alisa_icon)
+                .build();
+
+
+        nm.notify(startId, notification);
+        nm.cancel(startId);
+
     }
 
     @Nullable
@@ -91,26 +150,25 @@ public class AlisaService extends Service {
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
         mBLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
-
+/*
         // Checks if Bluetooth LE Scanner is available.
         if (mBLEScanner == null) {
-            Toast.makeText(this, "Can not find BLE Scanner", Toast.LENGTH_SHORT).show();
-            stopSelf();
+//            Toast.makeText(this, "Can not find BLE Scanner", Toast.LENGTH_SHORT).show();
+            Log.e(TAG,"Bluetooth Not Enabled");
             return;
         }
 
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             // Bluetooth 활성화 안됨.
             Log.e(TAG,"Bluetooth Not Enabled");
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                Log.e(TAG, e.getMessage());
-            }
         } else {
-            scanDevice(true);
+            //scanDevice(true);
         }
+        */
+    }
+
+    private void invalidateBluetoothAdapter(){
+
     }
 
     private void connectDevice(BluetoothDevice device) {
@@ -129,12 +187,19 @@ public class AlisaService extends Service {
     }
 
     private void scanDevice(boolean enable) {
+        if(mBLEScanner==null){
+            broadcastStatus("Scan unavailable");
+            Log.v(TAG,"Scan unavailable");
+            return;
+        }
         if (enable) {
             mBLEScanner.startScan(mScanCallback);
             broadcastStatus("Scanning...");
+            Log.v(TAG,"start scanning period");
         } else{
             mBLEScanner.stopScan(mScanCallback);
-            broadcastStatus("Scan finished");
+            broadcastStatus("Scan stopped");
+            Log.v(TAG,"stop scanning period");
         }
     }
     /*
@@ -164,13 +229,27 @@ public class AlisaService extends Service {
             passScanResult(result.getDevice(), result.getRssi(), result.getScanRecord().getBytes());
         }
     };
+/*
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        Log.d(TAG,"onTaskRemoved");
+        Intent restartServiceIntent = new Intent(getApplicationContext(), this.getClass());
+        restartServiceIntent.setPackage(getPackageName());
 
+        PendingIntent restartServicePendingIntent = PendingIntent.getService(getApplicationContext(), 1, restartServiceIntent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmService.set(
+                AlarmManager.ELAPSED_REALTIME,
+                SystemClock.elapsedRealtime() + 1000,
+                restartServicePendingIntent);
+        super.onTaskRemoved(rootIntent);
+    }
+*/
     private void passScanResult(BluetoothDevice device, int rssi, byte[] scanRecord) {
-//        mAdapter.addDevice(device);
         if(device.getName()!=null && device.getName().equals("QUALC")){
             connectDevice(device);
             Log.d(TAG,"CONNECTED!");
-            scanDevice(false);
+            stopScanning();
         }
     }
 
@@ -190,7 +269,7 @@ public class AlisaService extends Service {
         if(mReceiver !=null) return;
         final IntentFilter filter = new IntentFilter();
         filter.addAction(getResources().getString(R.string.string_filter_action_send_to_service));
-
+        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         mReceiver = new BluetoothServiceReciever();
         registerReceiver(mReceiver,filter);
     }
@@ -205,7 +284,15 @@ public class AlisaService extends Service {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch(msg.what){
-                case OPCode.SENSOR_DATA:
+                case OPCode.REQ_LOGIN:
+                    if(msg.arg1==OPCode.OK) {
+                        loggedIn = true;
+                        setImmortal();
+                        registerReceiver();
+                        startScanning();
+                    } else {
+                        stopForeground(true);
+                    }
                     break;
             }
         }
@@ -216,8 +303,93 @@ public class AlisaService extends Service {
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(R.string.string_filter_action_send_to_service)){
                 //TODO : 센서한테 업데이트 정보 보내주기
+            } else if(intent.getAction().equals(BluetoothAdapter.ACTION_STATE_CHANGED)){
+                if(intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR) == BluetoothAdapter.STATE_ON) {
+                    Log.d(TAG, "BLE ON!");
+                    if(mBLEScanner==null)initBluetoothAdapter();
+                    synchronized (scanningThread) {
+                        scanningThread.notify();
+                    }
+                }
             }
         }
+    }
+
+    class ScanningThread extends Thread{
+        public boolean isScanning = true;
+        @Override
+        public synchronized void run() {
+            super.run();
+            while(isScanning){
+                if(mBLEScanner==null || mBluetoothAdapter.getState()==BluetoothAdapter.STATE_OFF){
+                    try {
+                        Log.e(TAG,"BLE not enabled. Wait");
+                        this.wait();
+                    } catch (InterruptedException e) {
+                        Log.e(TAG,e.getMessage());
+                    }
+                    Log.e(TAG,"ScanningThread wake up");
+                    continue;
+                }
+                scanDevice(true);
+                try {
+                    Thread.sleep(Config.BLE_SCAN_TIME);
+                } catch (InterruptedException e) {
+                    Log.e(TAG,"BLE_SCAN_TIME interrupted : " + e.getMessage());
+                }
+                scanDevice(false);
+                try {
+                    Thread.sleep(Config.BLE_SCAN_PERIOD);
+                } catch (InterruptedException e) {
+                    Log.e(TAG,"BLE_SCAN_PERIOD interrupted : " + e.getMessage());
+                }
+            }
+            Log.d(TAG,"ScanningThread dead");
+        }
+    }
+
+
+
+    /**
+     * 알람 매니져에 서비스 등록
+     */
+    private void registerRestartAlarm(){
+        //태근이의 코멘트 : 작동은 하는데 stopService시에만 살아나고 process kill의경우는 살아나지못함.
+        Log.i("000 PersistentService" , "registerRestartAlarm" );
+        Intent intent = new Intent(AlisaService.this,RestartServiceReceiver.class);
+        intent.setAction("ACTION.RESTART.PersistentService");
+        PendingIntent sender = PendingIntent.getBroadcast(AlisaService.this,0,intent,0);
+
+        long firstTime = SystemClock.elapsedRealtime();
+        firstTime += 1*1000;
+
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+
+        /**
+         * 알람 등록
+         */
+        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,firstTime,1*1000,sender);
+
+    }
+
+    /**
+     * 알람 매니져에 서비스 해제
+     */
+    private void unregisterRestartAlarm(){
+
+        Log.i("000 PersistentService" , "unregisterRestartAlarm" );
+
+        Intent intent = new Intent(AlisaService.this,RestartServiceReceiver.class);
+        intent.setAction("ACTION.RESTART.PersistentService");
+        PendingIntent sender = PendingIntent.getBroadcast(AlisaService.this,0,intent,0);
+
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+
+        /**
+         * 알람 취소
+         */
+        alarmManager.cancel(sender);
+
     }
 
 

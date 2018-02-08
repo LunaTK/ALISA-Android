@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_car">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:src="@drawable/alisa_logo" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/et_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="E-Mail"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/darker_gray"
+            android:theme="@style/MyEditText" />
+
+        <EditText
+            android:id="@+id/et_pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:singleLine="true"
+            android:inputType="textPassword"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/darker_gray"
+            android:theme="@style/MyEditText" />
+
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@color/colorPrimary"
+                android:minHeight="30dp"
+                android:onClick="login"
+                android:text="LOG IN"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/btn_sign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@id/btn_login"
+                android:background="@color/colorPrimary"
+                android:minHeight="30dp"
+                android:onClick="register"
+                android:text="SIGN IN"
+                android:textColor="@android:color/white" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+</LinearLayout>

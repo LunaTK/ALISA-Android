@@ -155,6 +155,7 @@ class AlisaDevice extends BluetoothGattCallback {
             Log.d(TAG, "STATE_DISCONNECTED");
             disconnect();
             mService.broadcastStatus("Disconnected!");
+            mService.startScanning();
         }
 
     }

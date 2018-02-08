@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.lunatk.mybluetooth.com.lunatk.alisa.MainActivity">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,15 +12,13 @@
         android:layout_marginBottom="10dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="연결 상태 : "/>
-
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:id="@+id/tv_status"
             android:text="Disconnected"
+            android:textStyle="bold"
+            android:textSize="30sp"
             android:textColor="@android:color/holo_red_light"/>
 
     </LinearLayout>
@@ -29,7 +26,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -70,15 +68,16 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:id="@+id/tv_data"
+        android:textSize="24sp"
         android:text="no data recieved"
-        android:layout_margin="20dp"/>
+        android:layout_marginLeft="20dp"/>
+
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="startServiceMethod"
-        android:text="디바이스 스캔 시작"/>
-
+        android:onClick="logout"
+        android:text="Log Out"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

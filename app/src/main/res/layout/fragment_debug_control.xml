@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="2"
+    android:rowCount="6"
+    >
+
+    <Button
+        android:text="사고발생"
+        android:onClick="triggerAccident"
+        android:layout_columnWeight="1"/>
+    <Button
+        android:text="급가속발생"
+        android:onClick="triggerAcceleration"
+        android:layout_columnWeight="1"/>
+    <Button
+        android:text="급감속발생"
+        android:onClick="triggerDecceleration"
+        android:layout_columnWeight="1" />
+    <Button
+        android:text="필터상태경고"
+        android:onClick="triggerFilterWarning"
+        android:layout_columnWeight="1"/>
+
+    <EditText
+        android:hint="부품이름"
+        android:id="@+id/et_component"
+        android:layout_columnWeight="1" />
+
+    <Button
+        android:text="부품추가"
+        android:onClick="addComponent"
+        android:layout_columnWeight="1"/>
+
+    <Spinner
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill"
+        android:id="@+id/spinner"/>
+
+    <Button
+        android:text="주행거리초과발생"
+        android:onClick="triggerMileageExceed"
+        android:layout_columnWeight="1"/>
+
+</GridLayout>

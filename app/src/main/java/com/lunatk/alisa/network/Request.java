@@ -15,7 +15,9 @@ import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 
 /**
  * Created by LunaTK on 2018. 1. 30..
@@ -59,11 +61,21 @@ public class Request extends AsyncTask implements Comparable<Request> {
         Log.d(TAG,"Executing : " + this);
         Object ret = null;
         if(type==TYPE_IMMEDIATE){
-            establishConnection();
-            ret = handleRequest();
-            closeConnection();
+            try{
+                establishConnection();
+                ret = handleRequest();
+                closeConnection();
+            } catch (IOException e) {
+                Log.e(TAG,"Server is Offline");
+                Log.d(TAG, e.getMessage());
+            }
         }
         return ret;
+    }
+    @Override
+    protected void onPostExecute(Object result) {
+        super.onPostExecute(result);
+        handleResult(result);
     }
 
     public void staticExecute(){
@@ -73,50 +85,36 @@ public class Request extends AsyncTask implements Comparable<Request> {
         handleResult(handleRequest());
     }
 
-    public static void establishStaticConnection(){
-        try {
-            staticSocket = new Socket(Config.IP, Config.PORT);
-            staticDis = new DataInputStream(new BufferedInputStream(staticSocket.getInputStream()));
-            staticDos = new DataOutputStream(new BufferedOutputStream(staticSocket.getOutputStream()));
-        }catch (IOException e){
-            Log.e(TAG,"Server Connect Failed");
-        }
+    public static void establishStaticConnection() throws IOException {
+        SocketAddress socketAddress = new InetSocketAddress(Config.IP, Config.PORT);
+        staticSocket = new Socket();
+        staticSocket.setSoTimeout(Config.SOCKET_TIMEOUT);
+        staticSocket.connect(socketAddress, Config.SOCKET_TIMEOUT);
+        staticDis = new DataInputStream(new BufferedInputStream(staticSocket.getInputStream()));
+        staticDos = new DataOutputStream(new BufferedOutputStream(staticSocket.getOutputStream()));
     }
 
-    public static void closeStaticConnection(){
-        try {
-            staticDis.close();
-            staticDos.close();
-            staticSocket.close();
-        } catch (IOException e) {
-            Log.e(TAG,e.getMessage());
-        }
+    public static void closeStaticConnection() throws IOException{
+        staticDis.close();
+        staticDos.close();
+        staticSocket.close();
     }
 
-    @Override
-    protected void onPostExecute(Object result) {
-        super.onPostExecute(result);
-        handleResult(result);
+
+    private void establishConnection() throws IOException{
+        SocketAddress socketAddress = new InetSocketAddress(Config.IP, Config.PORT);
+        socket = new Socket();
+        socket.setSoTimeout(Config.SOCKET_TIMEOUT);
+        socket.connect(socketAddress, Config.SOCKET_TIMEOUT);
+        dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+
     }
 
-    private void establishConnection(){
-        try {
-            socket = new Socket(Config.IP, Config.PORT);
-            dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-            dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-        }catch (IOException e){
-            Log.e(TAG,"Server Connect Failed");
-        }
-    }
-
-    private void closeConnection(){
-        try {
-            dis.close();
-            dos.close();
-            socket.close();
-        } catch (IOException e) {
-            Log.e(TAG,e.getMessage());
-        }
+    private void closeConnection() throws IOException {
+        dis.close();
+        dos.close();
+        socket.close();
     }
 
     public int getPriority() {
@@ -144,7 +142,7 @@ public class Request extends AsyncTask implements Comparable<Request> {
             case OPCode.REQ_REGISTER:
                 ret = handleRegisterRequest();
                 break;
-            case OPCode.SENSOR_DATA:
+            case OPCode.NEW_SENSOR_DATA:
                 ret = handleSendSensorData();
                 break;
         }
@@ -165,8 +163,8 @@ public class Request extends AsyncTask implements Comparable<Request> {
         byte result = OPCode.ERR;
         id = bundle.getString("id");
         pw = bundle.getString("pw");
+        if(id==null || pw==null) return result;
         byte[] enc = Utils.getSHA512(pw);
-        Log.d(TAG,"enc len : " + enc.length);
         try {
             dos.writeByte(OPCode.REQ_LOGIN);
             dos.writeUTF(id);
@@ -210,7 +208,7 @@ public class Request extends AsyncTask implements Comparable<Request> {
         byte result = OPCode.ERR;
         data = bundle.getString("data");
         try {
-            dos.writeByte(OPCode.SENSOR_DATA);
+            dos.writeByte(OPCode.NEW_SENSOR_DATA);
             dos.writeUTF(data);
             dos.flush();
             Log.d(TAG,"Data Sent");

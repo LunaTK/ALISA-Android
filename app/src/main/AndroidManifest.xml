@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lunatk.mybluetooth">
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_SERVICE" />
+
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -15,20 +22,41 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.lunatk.alisa.activity.MainActivity"/>
-        <activity android:name="com.lunatk.alisa.activity.RegisterActivity"/>
 
-        <activity android:name="com.lunatk.alisa.activity.LoginActivity">
+        <activity android:name="com.lunatk.alisa.activity.SplashActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
+        <activity android:name="com.lunatk.alisa.activity.LoginActivity"/>
+        <activity android:name="com.lunatk.alisa.activity.RegisterActivity" />
+
+        <activity android:name="com.lunatk.alisa.activity.MainActivity" />
+
         <service
-            android:name="com.lunatk.alisa.bluetooth.AlisaService"/>
+            android:name="com.lunatk.alisa.bluetooth.AlisaService"
+            android:enabled="true"/>
+
+        <receiver
+            android:name="com.lunatk.alisa.bluetooth.RestartServiceReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:label="RestartService">
+            <intent-filter>
+                <action android:name="ACTION.RESTART.PersistentService" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.lunatk.alisa.activity.DebugPannelActivity"
+            android:label="@string/title_activity_debug_pannel"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </application>
 
 </manifest>

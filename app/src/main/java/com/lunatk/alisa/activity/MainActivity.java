@@ -3,10 +3,13 @@ package com.lunatk.alisa.activity;
 import android.Manifest;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,6 +27,8 @@ import android.widget.TextView;
 import com.lunatk.alisa.bluetooth.AlisaService;
 import com.lunatk.alisa.network.RequestManager;
 import com.lunatk.mybluetooth.R;
+
+import static com.lunatk.alisa.util.Utils.isServiceRunning;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,22 +61,14 @@ public class MainActivity extends AppCompatActivity {
     private LocationListener locationListener;
 
     private Handler mainHandler;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-
-        }
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
         tv_status = findViewById(R.id.tv_status);
         tv_data = findViewById(R.id.tv_data);
         tv_lat = findViewById(R.id.tv_lat);
@@ -126,7 +123,14 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+
+        sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        if(!isServiceRunning(this)) startAlisaService();
+
     }
+
 
     public void updateGPS(View v){
         updateGPS();
@@ -192,16 +196,6 @@ public class MainActivity extends AppCompatActivity {
             unregisterReceiver(mReceiver);
     }
 
-    public void setStatus(final String str, final int color){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                tv_status.setText(str);
-                tv_status.setTextColor(color);
-            }
-        });
-    }
-
     public void setStatus(final String str){
         runOnUiThread(new Runnable() {
             @Override
@@ -221,7 +215,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
     //서비스 시작.
-    public void startServiceMethod(View v){
+    public void startAlisaService(){
+        Log.d(TAG,"start alisa service");
         Intent service = new Intent(this, AlisaService.class);
         startService(service);
     }
@@ -235,6 +230,15 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    public void logout(View v){
+        editor.remove("user_id");
+        editor.remove("user_pass");
+        editor.commit();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -277,35 +281,10 @@ public class MainActivity extends AppCompatActivity {
                             + "\n지자기y : " + (data_buffer[18] + data_buffer[19] * 256)
                             + "\n지자기z : " + (data_buffer[20] + data_buffer[21] * 256);
                     setData(datastr);
+                    setStatus("Connected");
                 }
             }
         }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1:
-
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // 권한 허가
-                    // 해당 권한을 사용해서 작업을 진행할 수 있습니다
-                    updateGPS();
-                } else {
-                    // 권한 거부
-                    // 사용자가 해당권한을 거부했을때 해주어야 할 동작을 수행합니다
-                }
-                return;
-        }
-
-        // GPS 정보 가져오기
-        isGPSEnabled = locationManager.isProviderEnabled(
-                LocationManager.GPS_PROVIDER);
-
-        // 현재 네트워크 상태 값 알아오기
-        isNetworkEnabled = locationManager.isProviderEnabled(
-                LocationManager.NETWORK_PROVIDER);
     }
 
 }

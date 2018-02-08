@@ -42,4 +42,27 @@
         android:onClick="register"
         android:text="가입하기"/>
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="전화번호"
+        android:id="@+id/et_phone"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SMS 보내기"
+        android:onClick="sendVerificationSMS"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="code"
+        android:id="@+id/et_code"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SMS 확인"
+        android:onClick="authSMS"/>
+
 </LinearLayout>

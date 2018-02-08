@@ -1,9 +1,14 @@
 <resources>
-    <string name="app_name">MyBluetooth</string>
+    <string name="app_name">ALISA</string>
     <string name="string_ble_scan_wait_title">BLE</string>
     <string name="string_ble_scan_wait_txt">스캔중...</string>
     <string name="string_ble_enable_no">BLE 사용 불가능</string>
     <string name="string_filter_action_send_to_service">com.lunatk.mybluetooth.SEND_TO_SERVICE</string>
     <string name="string_filter_action_send_to_activity">com.lunatk.mybluetooth.SEND_TO_ACTIVITY</string>
     <string name="string_ble_find_device">디바이스 찾음</string>
+    <string name="preference_file_key">com.lunatk.mybluetooth.LOGIN_KEY_FILE</string>
+    <string name="title_activity_debug_pannel">DebugPannelActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="string_ble_state_changed">android.bluetooth.adapter.action.STATE_CHANGED</string>
 </resources>

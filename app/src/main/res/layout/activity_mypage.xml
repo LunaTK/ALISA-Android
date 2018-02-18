@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimaryDark">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_weight="1"
+            app:contentInsetStart="0dp"
+            android:background="?attr/colorPrimaryDark">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My Page"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="26sp"
+                android:textColor="@android:color/white"/>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="알림 설정"
+                android:layout_marginBottom="20dp"/>
+
+            <com.lunatk.alisa.customview.MyPageItemBig
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="false"
+                app:mpi_title="이벤트 알림 허용"
+                app:mpi_description="새로운 이벤트에 대한 알림을 받습니다." />
+
+            <com.lunatk.alisa.customview.MyPageItemBig
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="false"
+                app:mpi_title="공지사항 알림 허용"
+                app:mpi_description="새로운 공지사항에 대한 알림을 받습니다." />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="내 정보"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp"/>
+
+            <com.lunatk.alisa.customview.MyPageItemSmall
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                android:onClick="testfunc"
+                app:mpi_title="비밀번호 재설정" />
+
+            <com.lunatk.alisa.customview.MyPageItemSmall
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                app:mpi_title="차량 정보" />
+
+            <com.lunatk.alisa.customview.MyPageItemSmall
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                app:mpi_title="1:1 문의" />
+
+            <com.lunatk.alisa.customview.MyPageItemSmall
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                android:onClick="logout"
+                app:mpi_title="로그아웃" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="더 보기"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp"/>
+
+            <com.lunatk.alisa.customview.MyPageItemSmall
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                app:mpi_title="오류 제보" />
+
+            <com.lunatk.alisa.customview.MyPageItemSmall
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                app:mpi_title="이용 약관" />
+
+            <com.lunatk.alisa.customview.MyPageItemSmall
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                app:mpi_title="개인정보 취급 방침" />
+
+            <com.lunatk.alisa.customview.MyPageItemSmall
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                app:mpi_title="위치기반 서비스 이용 약관" />
+
+
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

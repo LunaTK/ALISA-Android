@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimaryDark">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:background="@android:color/transparent"
+            app:title=" "
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_weight="1">
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/alisa_title"
+        android:id="@+id/alisa_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <GridLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:columnCount="2"
+        android:rowCount="3"
+        app:layout_constraintBottom_toTopOf="@id/bottom_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/alisa_logo"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1">
+
+            <com.lunatk.alisa.customview.CircularProgressBar
+                android:id="@+id/cp_change_period"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:src="@drawable/bg_change_period"
+                android:padding="1dp"
+                app:cmp_border_color="#5d2932"
+                app:cmp_border_width="4dp"
+                app:cmp_centercircle_diammterer="1"
+                app:cmp_draw_anticlockwise="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:cmp_progress_color="?attr/colorPrimary"
+                app:cmp_progress_startAngle="90"
+                android:onClick="onChangePeriodClick"/>
+
+
+            <TextView
+                android:id="@+id/tv_change_period"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="교체 시기"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.35" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/cl_change_period_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_change_period">
+
+
+                <android.support.constraint.Guideline
+                    android:id="@+id/guideline3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.4" />
+
+                <ImageView
+                    android:id="@+id/ic_1"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:padding="2dp"
+                    android:src="@drawable/status_red"
+                    app:layout_constraintEnd_toEndOf="@id/guideline3" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="엔진 오일"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@id/ic_1"
+                    app:layout_constraintStart_toEndOf="@id/guideline3"
+                    app:layout_constraintTop_toTopOf="@id/ic_1" />
+
+
+                <ImageView
+                    android:id="@+id/ic_2"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="2dp"
+                    android:src="@drawable/status_green"
+                    app:layout_constraintEnd_toEndOf="@id/guideline3"
+                    app:layout_constraintTop_toBottomOf="@id/ic_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="에어컨 필터"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@id/ic_2"
+                    app:layout_constraintStart_toEndOf="@id/guideline3"
+                    app:layout_constraintTop_toTopOf="@id/ic_2" />
+
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1">
+
+            <com.lunatk.alisa.customview.CircularProgressBar
+                android:id="@+id/cp_mileage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:src="@drawable/bg_mileage"
+                android:padding="1dp"
+                app:cmp_border_color="#5d2932"
+                app:cmp_border_width="4dp"
+                app:cmp_centercircle_diammterer="1"
+                app:cmp_draw_anticlockwise="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:cmp_progress_color="?attr/colorPrimary"
+                app:cmp_progress_startAngle="90" />
+
+
+            <TextView
+                android:id="@+id/tv_mileage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="주행 거리"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                app:layout_constraintVertical_bias="0.35"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24km"
+                android:id="@+id/tv_mileage_value"
+                android:textStyle="bold"
+                app:layout_constraintVertical_bias="0.65"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1">
+
+            <com.lunatk.alisa.customview.CircularProgressBar
+                android:id="@+id/cp_driving_parking"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:src="@drawable/bg_driving_parking"
+                android:padding="1dp"
+                app:cmp_centercircle_diammterer="0.9"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_driving_parking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="운전 / 주차"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                app:layout_constraintVertical_bias="0.35"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2h 37m"
+                android:id="@+id/tv_driving_parking_value"
+                android:textStyle="bold"
+                app:layout_constraintVertical_bias="0.65"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1">
+
+            <com.lunatk.alisa.customview.CircularProgressBar
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:src="@drawable/bg_accident"
+                android:padding="1dp"
+                app:cmp_centercircle_diammterer="0.9"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_accident"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="사고 접수"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                app:layout_constraintVertical_bias="0.35"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1건"
+                android:id="@+id/tv_accident_value"
+                android:textStyle="bold"
+                app:layout_constraintVertical_bias="0.65"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1">
+
+            <com.lunatk.alisa.customview.CircularProgressBar
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:src="@drawable/bg_battery_remain"
+                android:padding="1dp"
+                app:cmp_centercircle_diammterer="0.9"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_battery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="배터리 잔량"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                app:layout_constraintVertical_bias="0.35"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="89%"
+                android:id="@+id/tv_battery_value"
+                android:textStyle="bold"
+                app:layout_constraintVertical_bias="0.65"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1">
+
+            <com.lunatk.alisa.customview.CircularProgressBar
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:src="@drawable/bg_temperature"
+                android:padding="1dp"
+                app:cmp_centercircle_diammterer="0.9"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="온도"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                app:layout_constraintVertical_bias="0.35"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="78°C"
+                android:id="@+id/tv_temperature_value"
+                android:textStyle="bold"
+                app:layout_constraintVertical_bias="0.65"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+    </GridLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/bottom"
+        android:id="@+id/bottom_bar"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>

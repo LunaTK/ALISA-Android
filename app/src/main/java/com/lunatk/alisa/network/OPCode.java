@@ -6,7 +6,7 @@ package com.lunatk.alisa.network;
 
 public class OPCode {
     //네트워킹용 OPCode
-    public static final byte ERR = 0x00, OK = 0x01, NOK = 0x02;
+    public static final byte ERR = (byte)0xFF, OK = 0x01, NOK = 0x02;
     public static final byte REQ_LOGIN = 0x03, REP_LOGIN = 0x04, REQ_REGISTER = 0x05, REP_REGISTER = 0x06;
     public static final byte NEW_SENSOR_DATA = 0x07, REQ_SENSOR_HISTORY = 0x08, REP_SENSOR_HISTORY = 0x09,
             NEW_GPS_DATA = 0x0a, REQ_GPS_HISTORY = 0x0b, REP_GPS_HISTORY = 0x0c,
@@ -18,7 +18,9 @@ public class OPCode {
             UPDATE_FILTER_THR = 0x19, REQ_FILTER_THR = 0x1a, REP_FILTER_THR = 0x1b,
             REQ_FILTER_STATISTIC = 0x1c, REP_FILTER_STATISTIC = 0x1d,
             UPDATE_COMP_MILEAGE = 0x1e, REQ_COMP_MILEAGE = 0x1f, REP_COMP_MILEAGE = 0x20,
-            REQ_COMP_STATISTIC = 0x21, REP_COMP_STATISTIC = 0x22;
+            REQ_COMP_STATISTIC = 0x21, REP_COMP_STATISTIC = 0x22,
+            REQ_LOGOUT = 0x23, REP_LOGOUT = 0x24,
+            NEW_EVENT_DATA = 0x25, REQ_EVENT_DATA = 0x26, REP_EVENT_DATA = 0x27;
     public static final byte ERR_USER_EXIST = (byte)0xF1;
 
     //어플내 브로드캐스팅용 OPCode

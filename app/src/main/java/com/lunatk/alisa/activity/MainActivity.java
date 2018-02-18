@@ -179,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
         }
         tv_lat.setText("" + lat);
         tv_long.setText("" + lon);
-
     }
 
     private void registerReceiver() {

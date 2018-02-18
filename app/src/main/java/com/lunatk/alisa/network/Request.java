@@ -31,6 +31,7 @@ public class Request extends AsyncTask implements Comparable<Request> {
     private static Socket staticSocket;
     private static DataInputStream staticDis;
     private static DataOutputStream staticDos;
+    private static int sessionId = -1;
 
     private Socket socket;
     private DataInputStream dis;
@@ -68,6 +69,7 @@ public class Request extends AsyncTask implements Comparable<Request> {
             } catch (IOException e) {
                 Log.e(TAG,"Server is Offline");
                 Log.d(TAG, e.getMessage());
+                ret = OPCode.ERR;
             }
         }
         return ret;
@@ -131,8 +133,6 @@ public class Request extends AsyncTask implements Comparable<Request> {
         return this.priority - o.getPriority();
     }
 
-
-
     public Object handleRequest(){
         Object ret = null;
         switch(opcode){
@@ -145,39 +145,46 @@ public class Request extends AsyncTask implements Comparable<Request> {
             case OPCode.NEW_SENSOR_DATA:
                 ret = handleSendSensorData();
                 break;
+            case OPCode.NEW_EVENT_DATA:
+                ret = handleEventData();
+                break;
         }
         return ret;
     }
 
     public void handleResult(Object result){
+        if(retHandler==null) return;
         if(result==null) result = (byte)OPCode.ERR;
-
         Message msg = Message.obtain();
         msg.what = opcode;
-        msg.arg1 = (byte)result;
+        if(result instanceof Byte){
+            msg.arg1 = (byte)result;
+        } else if(result instanceof  Integer){
+            msg.arg1 = (int)result;
+        }
         retHandler.sendMessage(msg);
     }
 
-    private byte handleLoginRequest(){
+    private int handleLoginRequest(){
         String id,pw;
-        byte result = OPCode.ERR;
         id = bundle.getString("id");
         pw = bundle.getString("pw");
-        if(id==null || pw==null) return result;
+        if(id==null || pw==null) return OPCode.NOK;
         byte[] enc = Utils.getSHA512(pw);
         try {
             dos.writeByte(OPCode.REQ_LOGIN);
+            dos.writeInt(sessionId);
             dos.writeUTF(id);
             dos.writeUTF(new String(enc));
             dos.flush();
-            Log.d(TAG,"Login Request Sent");
-            result = dis.readByte();
-            Log.d(TAG,"Login Request Result : " + result);
+            Log.d(TAG,"Login Request Sent : " + RequestManager.getInstance().toString());
+            sessionId = dis.readInt();
+            Log.d(TAG,"Login Request Result SessionId : " + sessionId);
         } catch (IOException e) {
             Log.d(TAG," Write failed : " +e.getMessage() );
         }
 
-        return result;
+        return sessionId;
     }
 
     private byte handleRegisterRequest(){
@@ -189,6 +196,7 @@ public class Request extends AsyncTask implements Comparable<Request> {
 //        Log.d(TAG,"enc len : " + enc.length);
         try {
             dos.writeByte(OPCode.REQ_REGISTER);
+            dos.writeInt(sessionId);
             dos.writeUTF(id);
             dos.writeUTF(new String(enc));
             dos.flush();
@@ -209,12 +217,35 @@ public class Request extends AsyncTask implements Comparable<Request> {
         data = bundle.getString("data");
         try {
             dos.writeByte(OPCode.NEW_SENSOR_DATA);
+            dos.writeInt(sessionId);
             dos.writeUTF(data);
             dos.flush();
             Log.d(TAG,"Data Sent");
             result = dis.readByte();
         } catch (IOException e) {
             Log.d(TAG," Write failed : " +e.getMessage() );
+        }
+        return result;
+    }
+
+    private byte handleEventData(){
+        Log.d(TAG, "handleEventData");
+        int eventType;
+        byte result = OPCode.ERR;
+        double lat,lon;
+        eventType = bundle.getInt("event_type");
+        lat = bundle.getDouble("lat");
+        lon = bundle.getDouble("lon");
+        try{
+            dos.writeByte(OPCode.NEW_EVENT_DATA);
+            dos.writeInt(sessionId);
+            dos.writeInt(eventType);
+            dos.writeDouble(lat);
+            dos.writeDouble(lon);
+            dos.flush();
+            result = dis.readByte();
+        } catch (IOException e){
+            Log.d(TAG, "Write failed : " + e.getMessage());
         }
         return result;
     }

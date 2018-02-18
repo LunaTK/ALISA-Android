@@ -62,6 +62,8 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mAuth.setLanguageCode("ko-kr");
 
+        boolean arr[][] = new boolean[12][22];
+
     }
 
     public void register(View v){

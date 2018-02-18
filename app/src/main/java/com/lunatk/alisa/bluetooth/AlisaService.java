@@ -18,6 +18,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
+import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -29,6 +33,7 @@ import android.widget.Toast;
 import com.lunatk.alisa.network.OPCode;
 import com.lunatk.alisa.network.RequestManager;
 import com.lunatk.alisa.util.Config;
+import com.lunatk.alisa.util.Utils;
 import com.lunatk.mybluetooth.R;
 
 import java.util.List;
@@ -47,13 +52,15 @@ public class AlisaService extends Service {
 
     private ScanningThread scanningThread;
 
-    private RequestManager requestManager;
+    private RequestManager requestManager = null;
     private Handler sHandler;
     private int startId;
     private boolean loggedIn = false;
     SharedPreferences sharedPreferences;
 
     private static final String TAG="AlisaService";
+
+    public IBinder mBinder = new AlisaServiceBinder();
 
     @Override
     public void onCreate() {
@@ -73,23 +80,41 @@ public class AlisaService extends Service {
         initBluetoothAdapter();
 
         requestManager = RequestManager.getInstance();
+
+        if(Utils.getConnectivityStatus(this)!=Utils.TYPE_NOT_CONNECTED) requestManager.setNetworkOnline(true);
+        else requestManager.setNetworkOnline(false);
+
         if(!requestManager.isAlive() && !requestManager.isRunning()) {
             requestManager.start();
         }
 
         sHandler = new ServiceHandler();
+        registerReceiver();
+        setImmortal();
         loginCheck();
-
         return super.onStartCommand(intent,flags,startId);
     }
 
     private void loginCheck() {
-        String id, pw;
+        int sessionId = -1;
+//        String id, pw;
         sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-        id = sharedPreferences.getString("user_id", null);
-        pw = sharedPreferences.getString("user_pass", null);
-        RequestManager.requestLogin(sHandler, id, pw);
-        Log.d(TAG, "Login Info : " + id + ", " + pw);
+        sessionId = sharedPreferences.getInt("session_id", -1);
+//        id = sharedPreferences.getString("user_id", null);
+//        pw = sharedPreferences.getString("user_pass", null);
+//        RequestManager.requestLogin(sHandler, id, pw);
+        Log.d(TAG, "Login Info : " +sessionId);
+
+
+        if(sessionId==-1) { // Login Failed
+            Toast.makeText(AlisaService.this, "Login Failed",Toast.LENGTH_SHORT).show();
+            stopForeground(true);
+            stopSelf();
+        } else { // Login Success
+            Toast.makeText(AlisaService.this, "Login Success",Toast.LENGTH_SHORT).show();
+            loggedIn = true;
+            startScanning();
+        }
     }
 
     @Override
@@ -141,7 +166,13 @@ public class AlisaService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return mBinder;
+    }
+
+    public class AlisaServiceBinder extends Binder {
+        AlisaService getService() {
+            return AlisaService.this;
+        }
     }
 
     private void initBluetoothAdapter(){
@@ -150,25 +181,6 @@ public class AlisaService extends Service {
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
         mBLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
-/*
-        // Checks if Bluetooth LE Scanner is available.
-        if (mBLEScanner == null) {
-//            Toast.makeText(this, "Can not find BLE Scanner", Toast.LENGTH_SHORT).show();
-            Log.e(TAG,"Bluetooth Not Enabled");
-            return;
-        }
-
-        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
-            // Bluetooth 활성화 안됨.
-            Log.e(TAG,"Bluetooth Not Enabled");
-        } else {
-            //scanDevice(true);
-        }
-        */
-    }
-
-    private void invalidateBluetoothAdapter(){
-
     }
 
     private void connectDevice(BluetoothDevice device) {
@@ -229,22 +241,7 @@ public class AlisaService extends Service {
             passScanResult(result.getDevice(), result.getRssi(), result.getScanRecord().getBytes());
         }
     };
-/*
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        Log.d(TAG,"onTaskRemoved");
-        Intent restartServiceIntent = new Intent(getApplicationContext(), this.getClass());
-        restartServiceIntent.setPackage(getPackageName());
 
-        PendingIntent restartServicePendingIntent = PendingIntent.getService(getApplicationContext(), 1, restartServiceIntent, PendingIntent.FLAG_ONE_SHOT);
-        AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        alarmService.set(
-                AlarmManager.ELAPSED_REALTIME,
-                SystemClock.elapsedRealtime() + 1000,
-                restartServicePendingIntent);
-        super.onTaskRemoved(rootIntent);
-    }
-*/
     private void passScanResult(BluetoothDevice device, int rssi, byte[] scanRecord) {
         if(device.getName()!=null && device.getName().equals("QUALC")){
             connectDevice(device);
@@ -270,6 +267,7 @@ public class AlisaService extends Service {
         final IntentFilter filter = new IntentFilter();
         filter.addAction(getResources().getString(R.string.string_filter_action_send_to_service));
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         mReceiver = new BluetoothServiceReciever();
         registerReceiver(mReceiver,filter);
     }
@@ -285,13 +283,17 @@ public class AlisaService extends Service {
             super.handleMessage(msg);
             switch(msg.what){
                 case OPCode.REQ_LOGIN:
-                    if(msg.arg1==OPCode.OK) {
+                    if(msg.arg1==OPCode.OK) { // Login success
+                        Toast.makeText(AlisaService.this, "Login Success",Toast.LENGTH_SHORT).show();
                         loggedIn = true;
-                        setImmortal();
-                        registerReceiver();
                         startScanning();
-                    } else {
+                    } else if(msg.arg1==OPCode.NOK){ // Login invalid
+                        Toast.makeText(AlisaService.this, "Login Failed",Toast.LENGTH_SHORT).show();
+                        loggedIn = false;
                         stopForeground(true);
+                        stopSelf();
+                    } else if(msg.arg1==OPCode.ERR){ // Server offline
+                        Toast.makeText(AlisaService.this, "Server Offline",Toast.LENGTH_SHORT).show();
                     }
                     break;
             }
@@ -309,6 +311,19 @@ public class AlisaService extends Service {
                     if(mBLEScanner==null)initBluetoothAdapter();
                     synchronized (scanningThread) {
                         scanningThread.notify();
+                    }
+                }
+            } else if(intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)){
+                if(Utils.getConnectivityStatus(AlisaService.this)!=Utils.TYPE_NOT_CONNECTED){ // Internet Online
+                    synchronized (requestManager) {
+                        Log.d(TAG,"Network Online");
+                        requestManager.setNetworkOnline(true);
+                        requestManager.notify();
+                    }
+                } else { //Internet Offline
+                    synchronized (requestManager) {
+                        Log.d(TAG, "Network Offline");
+                        requestManager.setNetworkOnline(false);
                     }
                 }
             }
@@ -347,8 +362,6 @@ public class AlisaService extends Service {
             Log.d(TAG,"ScanningThread dead");
         }
     }
-
-
 
     /**
      * 알람 매니져에 서비스 등록
@@ -391,6 +404,5 @@ public class AlisaService extends Service {
         alarmManager.cancel(sender);
 
     }
-
 
 }

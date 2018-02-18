@@ -43,4 +43,12 @@
         android:onClick="triggerMileageExceed"
         android:layout_columnWeight="1"/>
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:onClick="showMypage"
+        android:text="마이페이지" />
+
 </GridLayout>

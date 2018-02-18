@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:adjustViewBounds="true"
+        android:layout_gravity="bottom|right"
+        android:id="@+id/iv_background"
+        android:focusable="false"
+        android:src="@drawable/silver_lines" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:focusable="false"
+        android:background="@android:color/white">
+
+        <View
+            android:layout_width="7dp"
+            android:layout_height="40dp"
+            android:background="?attr/colorPrimary"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/linear_layout"
+            android:layout_marginLeft="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:text="Title"
+                android:textColor="@android:color/black"
+                android:id="@+id/tv_title"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"
+                android:text="Description"
+                android:id="@+id/tv_desc"/>
+
+        </LinearLayout>
+
+
+        <com.suke.widget.SwitchButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:id="@+id/switch_button"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/linear_layout"
+            app:sb_checked="true"
+            app:sb_shadow_effect="true"
+            app:sb_checked_color="?attr/colorPrimary"/>
+
+    </RelativeLayout>
+
+
+
+</FrameLayout>

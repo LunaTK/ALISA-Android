@@ -26,6 +26,8 @@ import android.widget.TextView;
 import com.lunatk.alisa.bluetooth.AlisaService;
 import com.lunatk.alisa.fragment.DebugControlFragment;
 import com.lunatk.alisa.fragment.DebugDisplayFragment;
+import com.lunatk.alisa.network.RequestManager;
+import com.lunatk.alisa.util.Constants;
 import com.lunatk.mybluetooth.R;
 
 import static com.lunatk.alisa.util.Utils.isServiceRunning;
@@ -101,7 +103,6 @@ public class DebugPannelActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -157,6 +158,7 @@ public class DebugPannelActivity extends AppCompatActivity {
     public void logout(View v){
         editor.remove("user_id");
         editor.remove("user_pass");
+        editor.remove("session_id");
         editor.commit();
         stopService(new Intent(this, AlisaService.class));
         Intent intent = new Intent(this, LoginActivity.class);
@@ -210,19 +212,19 @@ public class DebugPannelActivity extends AppCompatActivity {
     }
 
     public void triggerAccident(View view){
-
+        RequestManager.getInstance().sendEventData(null, Constants.EVENT_ACCIDENT, 123,144);
     }
 
     public void triggerAcceleration(View view){
-
+        RequestManager.getInstance().sendEventData(null, Constants.EVENT_ACCELERATION, 123,144);
     }
 
     public void triggerDecceleration(View view){
-
+        RequestManager.getInstance().sendEventData(null, Constants.EVENT_DECCELERATION, 123,144);
     }
 
     public void triggerFilterWarning(View view){
-
+        RequestManager.getInstance().sendEventData(null, Constants.EVENT_FILTER_WARNING, 123,144);
     }
 
     public void addComponent(View view){
@@ -231,6 +233,10 @@ public class DebugPannelActivity extends AppCompatActivity {
     }
 
     public void triggerMileageExceed(View view){
+    }
 
+    public void showMypage(View view){
+        Intent intent = new Intent(this, MyPageActivity.class);
+        startActivity(intent);
     }
 }

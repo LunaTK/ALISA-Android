@@ -21,8 +21,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.lunatk.alisa.bluetooth.AlisaService;
 import com.lunatk.alisa.network.OPCode;
 import com.lunatk.alisa.network.RequestManager;
+import com.lunatk.alisa.util.Utils;
 import com.lunatk.mybluetooth.R;
 
 /**
@@ -42,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG," onCreate");
-        setContentView(R.layout.activity_login_test);
+        setContentView(R.layout.activity_login);
         et_id = findViewById(R.id.et_id);
         et_pw = findViewById(R.id.et_pw);
 
@@ -52,17 +54,19 @@ public class LoginActivity extends AppCompatActivity {
                 super.handleMessage(msg);
                 progress.cancel();
 
-                if(msg.what == OPCode.REQ_LOGIN && msg.arg1 == OPCode.OK){
+                if(msg.what == OPCode.REQ_LOGIN && msg.arg1 !=OPCode.ERR){
                     editor.putString("user_id", et_id.getText().toString());
                     editor.putString("user_pass", et_pw.getText().toString());
+                    editor.putInt("session_id", msg.arg1);
                     editor.commit();
                     Toast.makeText(LoginActivity.this, "Login Success",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, DebugPannelActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
                     editor.remove("user_id");
                     editor.remove("user_pass");
+                    editor.remove("session_id");
                     editor.commit();
                     Toast.makeText(LoginActivity.this, "Login Failed",Toast.LENGTH_SHORT).show();
                 }
@@ -77,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         editor = sharedPreferences.edit();
 
         if(autoLogin()) login(null);
+
     }
 
     private boolean autoLogin(){

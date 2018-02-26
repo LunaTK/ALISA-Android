@@ -155,7 +155,7 @@ class AlisaDevice extends BluetoothGattCallback {
             Log.d(TAG, "STATE_DISCONNECTED");
             disconnect();
             mService.broadcastStatus("Disconnected!");
-            mService.startScanning();
+            mService.startScanningWithRegisteredDevice();
         }
 
     }
@@ -166,7 +166,7 @@ class AlisaDevice extends BluetoothGattCallback {
     @Override
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
         super.onCharacteristicChanged(gatt, characteristic);
-        Log.d(TAG, "onCharacteristicChanged " + characteristic.getUuid());
+//        Log.d(TAG, "onCharacteristicChanged " + characteristic.getUuid());
         byte[] data = characteristic.getValue();
         if (data[0] == 0xAA - 256) { // STX
             if (data[1] == 0x11) {  //FLOW TYPE

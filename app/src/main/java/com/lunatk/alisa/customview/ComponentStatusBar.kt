@@ -16,8 +16,8 @@ import com.lunatk.mybluetooth.R
 class ComponentStatusBar : View {
 
     companion object {
-        private val animationDuration: Long = 2000
-        private val maxBlockNum = 15
+        private val animationDuration: Long = 1700
+        private val maxBlockNum = 12
         private val blockOffsetX = 1
         private val blockOffsetY = 1
         private val TAG = "PeriodStatusBar"
@@ -30,7 +30,7 @@ class ComponentStatusBar : View {
             field = value;
             if(useAnimation) {
                 with(object : Animation() {
-                    var beforeBlockCount = 15
+                    var beforeBlockCount = maxBlockNum
                     override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
                         super.applyTransformation(interpolatedTime, t)
                         value_anim = 100 - ((100-value) * interpolatedTime).toInt()
@@ -40,8 +40,8 @@ class ComponentStatusBar : View {
                         }
                     }
                 }) {
-                    this.duration = animationDuration
-                    this.setInterpolator(android.view.animation.DecelerateInterpolator())
+                    duration = animationDuration
+                    setInterpolator(android.view.animation.DecelerateInterpolator())
                     startAnimation(this)
                 }
             } else {
@@ -71,7 +71,7 @@ class ComponentStatusBar : View {
 //        Log.d(TAG, "width : $viewWidth, height : $viewHeight")
         for (i in 0..(maxBlockNum.toDouble()*value_anim/100).toInt()){
             canvas?.drawBitmap(
-                    if(i<maxBlockNum/3) {blockRed} else if(i<maxBlockNum*2/3) {blockYellow} else {blockGreen},
+                    if(value<=20) {blockRed} else if(value<=50) {blockYellow} else {blockGreen},
                     null,
                     rectForIthBlock(i),
                     mPaint)

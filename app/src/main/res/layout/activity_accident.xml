@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/backgroundSilver">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            app:contentInsetStart="0dp"
+            android:layout_height="?attr/actionBarSize">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="사고 접수"
+                android:layout_gravity="center"
+                android:textColor="@color/textGray"
+                android:textStyle="bold"
+                android:textSize="26sp"/>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/backgroundSilver"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_mobile_phone"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:textColor="@color/textSilver"
+                android:layout_marginTop="10dp"
+                android:text="버튼을 눌러 지인 연락처를 설정할 수 있습니다"
+                android:layout_marginBottom="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="사고 종류"
+                android:layout_margin="10dp"
+                style="@style/Title"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/background_red_mark">
+
+                <Spinner
+                    android:id="@+id/spinner_type"
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:entries="@array/accident_types"
+                    android:textColor="@color/textGray"/>
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전송할 문자 메세지"
+                android:layout_margin="10dp"
+                style="@style/Title"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/background_red_mark">
+
+                <Spinner
+                    android:id="@+id/spinner_msg"
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    style="@style/Title"/>
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="소리 알림"
+                android:layout_margin="10dp"
+                style="@style/Title"/>
+
+            <com.lunatk.alisa.customview.SlashToggleButton
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="소리 알림 종류"
+                android:layout_margin="10dp"
+                style="@style/Title"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/background_silver_border">
+
+                <Spinner
+                    android:id="@+id/spinner_sound"
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:entries="@array/alert_sound_types"
+                    style="@style/Content"/>
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="소리 알림 간격"
+                android:layout_margin="10dp"
+                style="@style/Title"/>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_silver_border">
+
+                <CheckBox
+                    android:id="@+id/checkbox_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/checkbox_1"/>
+
+                <TextView
+                    android:text="1회만"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    style="@style/Content"
+                    app:layout_constraintTop_toTopOf="@id/checkbox_1"
+                    app:layout_constraintBottom_toBottomOf="@id/checkbox_1"
+                    app:layout_constraintStart_toEndOf="@id/checkbox_1"/>
+
+                <TextView
+                    android:text="알림 확인시 까지"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    style="@style/Content"
+                    app:layout_constraintTop_toTopOf="@id/checkbox_2"
+                    app:layout_constraintBottom_toBottomOf="@id/checkbox_2"
+                    app:layout_constraintStart_toEndOf="@id/checkbox_2"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

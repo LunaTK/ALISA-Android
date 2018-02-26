@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.lunatk.alisa.activity.TrackingActivity">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/backgroundSilver">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            app:contentInsetStart="0dp"
+            android:layout_height="?attr/actionBarSize">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="차량 위치"
+                android:layout_gravity="center"
+                android:textColor="@color/textGray"
+                android:textStyle="bold"
+                android:textSize="26sp"/>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <fragment
+        android:id="@+id/map"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        class="com.google.android.gms.maps.MapFragment"
+        app:layout_constraintTop_toBottomOf="@id/appbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:text="주차중입니다"
+        android:background="@drawable/background_silver_round_border"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/appbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="5dp"
+        style="@style/Content"
+        android:gravity="center"
+        android:padding="10dp"/>
+
+    <ImageButton
+        android:id="@+id/ib_marker"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/background_silver_round_border"
+        android:padding="2dp"
+        android:elevation="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_marker"
+        android:onClick="onCarLocation"
+        app:layout_constraintEnd_toEndOf="@id/ib_reset"
+        app:layout_constraintBottom_toTopOf="@id/ib_my_pos"
+        android:layout_marginBottom="5dp"/>
+
+    <ImageButton
+        android:id="@+id/ib_my_pos"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/background_silver_round_border"
+        android:padding="6dp"
+        android:elevation="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_my_pos"
+        android:onClick="onMyLocation"
+        app:layout_constraintEnd_toEndOf="@id/ib_reset"
+        app:layout_constraintBottom_toTopOf="@id/ib_reset"
+        android:layout_marginBottom="5dp"/>
+
+    <ImageButton
+        android:id="@+id/ib_reset"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/background_silver_round_border"
+        android:padding="6dp"
+        android:elevation="5dp"
+        android:scaleType="fitCenter"
+        android:onClick="onRefresh"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="20dp"/>
+
+</android.support.constraint.ConstraintLayout>

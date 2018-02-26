@@ -35,7 +35,6 @@ public class DebugDisplayFragment extends Fragment {
         tv_data = v.findViewById(R.id.tv_data);
         tv_lat = v.findViewById(R.id.tv_lat);
         tv_long = v.findViewById(R.id.tv_long);
-
         return v;
     }
 

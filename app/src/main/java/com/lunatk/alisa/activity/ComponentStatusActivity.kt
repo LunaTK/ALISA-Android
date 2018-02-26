@@ -2,6 +2,7 @@ package com.lunatk.alisa.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
@@ -17,10 +18,9 @@ class ComponentStatusActivity : AppCompatActivity() {
 
     val recyclerView by lazy { findViewById(R.id.recycler_view) as? RecyclerView}
     val recyclerViewAdapter: ComponentStatusListAdapter
-
     init {
         recyclerViewAdapter = ComponentStatusListAdapter()
-        recyclerViewAdapter.addItem(ComponentInfo("엔진오일", 20_000, 14_000))
+        recyclerViewAdapter.addItem(ComponentInfo("엔진오일", 20_000, 20_000))
         recyclerViewAdapter.addItem(ComponentInfo("에어컨 필터", 50_000, 14_000))
         recyclerViewAdapter.addItem(ComponentInfo("부동액", 40_000, 14_000))
     }
@@ -51,6 +51,7 @@ class ComponentStatusActivity : AppCompatActivity() {
             with(it){
                 layoutManager = LinearLayoutManager(context).apply {
                     orientation = LinearLayoutManager.VERTICAL
+                    addItemDecoration(DividerItemDecoration(this@ComponentStatusActivity, LinearLayoutManager.VERTICAL))
                 }
                 adapter = recyclerViewAdapter
             }

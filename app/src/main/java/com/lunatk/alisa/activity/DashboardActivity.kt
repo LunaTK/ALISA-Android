@@ -10,10 +10,14 @@ import com.lunatk.mybluetooth.R
 import android.text.Spanned
 import android.text.style.RelativeSizeSpan
 import android.text.SpannableStringBuilder
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.lunatk.alisa.bluetooth.AlisaService
 import com.lunatk.alisa.customview.CircularProgressBar
+import com.lunatk.alisa.util.Utils
+import java.sql.Timestamp
 
 
 /**
@@ -93,6 +97,8 @@ class DashboardActivity : AppCompatActivity() {
 
         loadStatus()
 
+        Utils.startAlisaService(this)
+
     }
 
     fun loadStatus(){
@@ -108,15 +114,18 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_simple_menu, menu)
+        menuInflater.inflate(R.menu.menu_dashboard, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
-            R.id.action_settings, R.id.toolbar -> {
+            R.id.action_settings -> {
                 val intent = Intent(this, MyPageActivity::class.java)
                 startActivity(intent)
+            }
+            R.id.action_bluetooth -> {
+                startActivity(Intent(this, DeviceSearchActivity::class.java))
             }
         }
         return super.onOptionsItemSelected(item)
@@ -125,4 +134,22 @@ class DashboardActivity : AppCompatActivity() {
     fun onChangePeriodClick(view: View){
         startActivity(Intent(this, ComponentStatusActivity::class.java))
     }
+
+    fun onAccidentClick(view: View){
+        startActivity(Intent(this, AccidentActivity::class.java))
+    }
+
+    fun onMileageClick(view: View){
+        startActivity(Intent(this, MileageActivity::class.java))
+    }
+
+    fun onTrackingClick(view: View){
+
+        startActivity(Intent(this, TrackingActivity::class.java))
+    }
+
+    fun showDebugPannel(view: View){
+        startActivity(Intent(this, DebugPannelActivity::class.java))
+    }
+
 }

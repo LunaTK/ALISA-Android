@@ -58,7 +58,6 @@ class ComponentStatusListAdapter : RecyclerView.Adapter<ComponentStatusListAdapt
         var iv_status: ImageView
 
         constructor(itemView: View):super(itemView){
-            Log.d("ComponentStatus", "hi")
             tv_name = itemView.findViewById(R.id.tv_name)
             tv_mileage = itemView.findViewById(R.id.tv_mileage)
             componentStatusbar = itemView.findViewById(R.id.component_status_bar)

@@ -1,23 +1,16 @@
 package com.lunatk.alisa.activity;
 
-import android.Manifest;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +18,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.lunatk.alisa.bluetooth.AlisaService;
-import com.lunatk.alisa.network.RequestManager;
 import com.lunatk.mybluetooth.R;
 
 import static com.lunatk.alisa.util.Utils.isServiceRunning;

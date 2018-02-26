@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.lunatk.alisa.bluetooth.AlisaService
+import com.lunatk.alisa.util.Utils
 
 import com.lunatk.mybluetooth.R
 
@@ -26,10 +27,7 @@ class MyPageActivity : AppCompatActivity() {
     }
 
     fun logout(v: View) {
-        editor.remove("user_id")
-        editor.remove("user_pass")
-        editor.remove("session_id")
-        editor.commit()
+        Utils.removeLoginInfo(editor)
         stopService(Intent(this, AlisaService::class.java))
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)

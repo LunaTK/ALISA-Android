@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#ad282b</color>
+    <color name="colorPrimaryPressed">#801d20</color>
     <color name="colorPrimaryDark">#333333</color>
     <color name="colorAccent">#8b623c</color>
+
+    <color name="textGray">#1a1a1a</color>
+    <color name="textSilver">#4d4d4d</color>
+
+    <color name="btnBlackNormal">#2d2d2d</color>
+    <color name="btnBlackPressed">#0d0d0d</color>
+
+    <color name="divider">#e6e6e6</color>
+
+    <color name="toggleOn">#ba1c21</color>
+    <color name="toggleOff">#cccccc</color>
+    <color name="borderColorSilver">#a9a9a9</color>
+
+    <color name="backgroundSilver">#f2f2f2</color>
 </resources>

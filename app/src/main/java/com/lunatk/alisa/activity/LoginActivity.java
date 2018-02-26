@@ -1,18 +1,12 @@
 package com.lunatk.alisa.activity;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.lunatk.alisa.bluetooth.AlisaService;
 import com.lunatk.alisa.network.OPCode;
 import com.lunatk.alisa.network.RequestManager;
 import com.lunatk.alisa.util.Utils;
@@ -55,20 +48,16 @@ public class LoginActivity extends AppCompatActivity {
                 progress.cancel();
 
                 if(msg.what == OPCode.REQ_LOGIN && msg.arg1 !=OPCode.ERR){
-                    editor.putString("user_id", et_id.getText().toString());
-                    editor.putString("user_pass", et_pw.getText().toString());
-                    editor.putInt("session_id", msg.arg1);
-                    editor.commit();
-                    Toast.makeText(LoginActivity.this, "Login Success",Toast.LENGTH_SHORT).show();
+                    Utils.setLoginInfo(editor, et_id.getText().toString(), et_pw.getText().toString());
+                    Utils.setSessionId(editor, msg.arg1);
+
+                    Toast.makeText(LoginActivity.this, "Login Success in Activity",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
-                    editor.remove("user_id");
-                    editor.remove("user_pass");
-                    editor.remove("session_id");
-                    editor.commit();
-                    Toast.makeText(LoginActivity.this, "Login Failed",Toast.LENGTH_SHORT).show();
+                    Utils.removeLoginInfo(editor);
+                    Toast.makeText(LoginActivity.this, "Login Failed in Activity",Toast.LENGTH_SHORT).show();
                 }
             }
         };

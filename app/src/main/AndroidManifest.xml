@@ -23,6 +23,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBYcTVMZkRE5eZ8mD3LR_RhH4aOZVUAzdc"/>
+
         <activity android:name="com.lunatk.alisa.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,6 +65,9 @@
         <activity android:name="com.lunatk.alisa.activity.DashboardActivity" />
         <activity android:name="com.lunatk.alisa.activity.DeviceSearchActivity"></activity>
         <activity android:name="com.lunatk.alisa.activity.ComponentStatusActivity"></activity>
+        <activity android:name="com.lunatk.alisa.activity.AccidentActivity"></activity>
+        <activity android:name="com.lunatk.alisa.activity.MileageActivity"></activity>
+        <activity android:name="com.lunatk.alisa.activity.TrackingActivity"></activity>
     </application>
 
 </manifest>

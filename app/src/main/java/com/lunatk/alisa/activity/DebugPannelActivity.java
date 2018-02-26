@@ -15,22 +15,18 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.TextView;
 
 import com.lunatk.alisa.bluetooth.AlisaService;
 import com.lunatk.alisa.fragment.DebugControlFragment;
 import com.lunatk.alisa.fragment.DebugDisplayFragment;
 import com.lunatk.alisa.network.RequestManager;
 import com.lunatk.alisa.util.Constants;
+import com.lunatk.alisa.util.Utils;
 import com.lunatk.mybluetooth.R;
 
-import static com.lunatk.alisa.util.Utils.isServiceRunning;
+import static com.lunatk.alisa.util.Utils.removeLoginInfo;
 
 public class DebugPannelActivity extends AppCompatActivity {
 
@@ -81,9 +77,8 @@ public class DebugPannelActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
-        if(!isServiceRunning(this)) startAlisaService();
+        Utils.startAlisaService(this);
     }
-
 
     private void registerReceiver() {
         Log.d(TAG,"registerReceiver");
@@ -118,12 +113,6 @@ public class DebugPannelActivity extends AppCompatActivity {
         ((DebugDisplayFragment)mSectionsPagerAdapter.getItem(0)).setData(data);
     }
 
-    public void startAlisaService(){
-        Log.d(TAG,"start alisa service");
-        Intent service = new Intent(this, AlisaService.class);
-        startService(service);
-    }
-
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -156,10 +145,7 @@ public class DebugPannelActivity extends AppCompatActivity {
     }
 
     public void logout(View v){
-        editor.remove("user_id");
-        editor.remove("user_pass");
-        editor.remove("session_id");
-        editor.commit();
+        removeLoginInfo(editor);
         stopService(new Intent(this, AlisaService.class));
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

@@ -18,7 +18,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:background="@android:color/transparent"
-            app:title=" "
+            app:title=""
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1">
@@ -64,18 +64,24 @@
                 android:layout_gravity="center"
                 android:src="@drawable/bg_change_period"
                 android:padding="1dp"
-                app:cmp_border_color="#5d2932"
-                app:cmp_border_width="4dp"
-                app:cmp_centercircle_diammterer="1"
-                app:cmp_draw_anticlockwise="false"
+                app:cmp_centercircle_diammterer="0.9"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:cmp_progress_color="?attr/colorPrimary"
-                app:cmp_progress_startAngle="90"
                 android:onClick="onChangePeriodClick"/>
 
+            <TextView
+                android:id="@+id/tv_change_count"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:text="3"
+                android:background="@drawable/background_red_fill_round_border"
+                android:gravity="center"
+                android:layout_marginBottom="2dp"
+                app:layout_constraintBottom_toTopOf="@id/tv_change_period"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
                 android:id="@+id/tv_change_period"
@@ -89,7 +95,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.35" />
+                app:layout_constraintVertical_bias="0.4" />
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/cl_change_period_info"
@@ -168,10 +174,7 @@
                 android:src="@drawable/bg_mileage"
                 android:padding="1dp"
                 android:onClick="onMileageClick"
-                app:cmp_border_color="#5d2932"
-                app:cmp_border_width="4dp"
-                app:cmp_centercircle_diammterer="1"
-                app:cmp_draw_anticlockwise="false"
+                app:cmp_centercircle_diammterer="0.9"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -235,22 +238,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="운전 / 주차"
+                android:text="차량 위치"
                 android:textStyle="bold"
                 android:textSize="18sp"
-                app:layout_constraintVertical_bias="0.35"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2h 37m"
-                android:id="@+id/tv_driving_parking_value"
-                android:textStyle="bold"
-                app:layout_constraintVertical_bias="0.65"
+                app:layout_constraintVertical_bias="0.4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -282,21 +273,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="사고 접수"
+                android:text="사고 기록"
                 android:textStyle="bold"
                 android:textSize="18sp"
-                app:layout_constraintVertical_bias="0.35"
+                app:layout_constraintVertical_bias="0.4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1건"
-                android:id="@+id/tv_accident_value"
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/iv_accident_history"
                 android:textStyle="bold"
+                android:src="@drawable/ic_warning"
                 app:layout_constraintVertical_bias="0.65"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -313,12 +304,18 @@
             android:layout_rowWeight="1">
 
             <com.lunatk.alisa.customview.CircularProgressBar
+                android:id="@+id/cp_battery"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:src="@drawable/bg_battery_remain"
                 android:padding="1dp"
-                app:cmp_centercircle_diammterer="0.9"
+                app:cmp_border_color="#5d2932"
+                app:cmp_border_width="4dp"
+                app:cmp_centercircle_diammterer="1"
+                app:cmp_draw_anticlockwise="false"
+                app:cmp_progress_color="?attr/colorPrimary"
+                app:cmp_progress_startAngle="90"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -360,12 +357,18 @@
             android:layout_rowWeight="1">
 
             <com.lunatk.alisa.customview.CircularProgressBar
+                android:id="@+id/cp_temperature"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:src="@drawable/bg_temperature"
                 android:padding="1dp"
-                app:cmp_centercircle_diammterer="0.9"
+                app:cmp_border_color="#5d2932"
+                app:cmp_border_width="4dp"
+                app:cmp_centercircle_diammterer="1"
+                app:cmp_draw_anticlockwise="false"
+                app:cmp_progress_color="?attr/colorPrimary"
+                app:cmp_progress_startAngle="90"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -376,7 +379,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="온도"
+                android:text="엔진오일 온도"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 app:layout_constraintVertical_bias="0.35"

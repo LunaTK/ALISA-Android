@@ -7,9 +7,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import com.lunatk.alisa.R
 import com.lunatk.alisa.`object`.ComponentInfo
 import com.lunatk.alisa.adapter.ComponentStatusListAdapter
-import com.lunatk.mybluetooth.R
 
 /**
  * Created by LunaTK on 2018. 2. 18..
@@ -23,11 +23,21 @@ class ComponentStatusActivity : AppCompatActivity() {
         recyclerViewAdapter.addItem(ComponentInfo("엔진오일", 20_000, 20_000))
         recyclerViewAdapter.addItem(ComponentInfo("에어컨 필터", 50_000, 14_000))
         recyclerViewAdapter.addItem(ComponentInfo("부동액", 40_000, 14_000))
+        recyclerViewAdapter.addItem(ComponentInfo("에어필터", 15_000, 14_000))
+        recyclerViewAdapter.addItem(ComponentInfo("브레이크 오일", 20_000, 14_000))
+        recyclerViewAdapter.addItem(ComponentInfo("브레이크 패드", 30_000, 14_000))
+        recyclerViewAdapter.addItem(ComponentInfo("배터리", 100_000, 14_000))
+        recyclerViewAdapter.sortItems()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_component_status)
+
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = ""
+
         setSupportActionBar(findViewById(R.id.toolbar))
         setupRecyclerView()
     }
@@ -38,9 +48,12 @@ class ComponentStatusActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId){
-            R.id.action_settings->{
-                //TODO: 설정창 띄우기
+        when(item?.itemId) {
+            R.id.action_settings -> {
+            }
+
+            android.R.id.home -> {
+                onBackPressed()
             }
         }
         return super.onOptionsItemSelected(item)

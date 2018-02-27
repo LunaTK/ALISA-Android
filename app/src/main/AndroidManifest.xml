@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.lunatk.mybluetooth">
+    package="com.lunatk.alisa">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -19,14 +19,13 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/alisa_icon"
-        android:label="@string/app_name"
+        android:label="ALISA"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBYcTVMZkRE5eZ8mD3LR_RhH4aOZVUAzdc"/>
+            android:value="AIzaSyBYcTVMZkRE5eZ8mD3LR_RhH4aOZVUAzdc" />
 
         <activity android:name="com.lunatk.alisa.activity.SplashActivity">
             <intent-filter>
@@ -63,11 +62,12 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name="com.lunatk.alisa.activity.MyPageActivity" />
         <activity android:name="com.lunatk.alisa.activity.DashboardActivity" />
-        <activity android:name="com.lunatk.alisa.activity.DeviceSearchActivity"></activity>
-        <activity android:name="com.lunatk.alisa.activity.ComponentStatusActivity"></activity>
-        <activity android:name="com.lunatk.alisa.activity.AccidentActivity"></activity>
-        <activity android:name="com.lunatk.alisa.activity.MileageActivity"></activity>
-        <activity android:name="com.lunatk.alisa.activity.TrackingActivity"></activity>
+        <activity android:name="com.lunatk.alisa.activity.DeviceSearchActivity" />
+        <activity android:name="com.lunatk.alisa.activity.ComponentStatusActivity" />
+        <activity android:name="com.lunatk.alisa.activity.AccidentConfigActivity" />
+        <activity android:name="com.lunatk.alisa.activity.MileageActivity" />
+        <activity android:name="com.lunatk.alisa.activity.TrackingActivity" />
+        <activity android:name="com.lunatk.alisa.activity.AccidentHistoryActivity"></activity>
     </application>
 
 </manifest>

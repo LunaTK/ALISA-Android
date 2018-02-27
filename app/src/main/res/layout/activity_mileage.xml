@@ -2,7 +2,8 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundSilver">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -14,6 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             app:contentInsetStart="0dp"
+            app:title=""
             android:layout_height="?attr/actionBarSize">
 
             <TextView
@@ -68,7 +70,7 @@
             android:textColor="@android:color/holo_green_light"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:text="21,725"
+            android:text="32,517"
             android:layout_marginRight="20dp"
             app:layout_constraintEnd_toStartOf="@id/tv_km"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_total"/>

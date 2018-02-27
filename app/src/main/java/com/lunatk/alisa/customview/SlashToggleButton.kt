@@ -9,7 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
-import com.lunatk.mybluetooth.R
+import com.lunatk.alisa.R
 
 /**
  * Created by LunaTK on 2018. 2. 25..
@@ -77,7 +77,6 @@ class SlashToggleButton(context: Context, attrs: AttributeSet?) : View (context,
         setBackgroundColor(BACKGROUND_COLOR)
         isClickable = true
 
-
     }
 
     fun Path.moveTo(point: Point){
@@ -119,6 +118,7 @@ class SlashToggleButton(context: Context, attrs: AttributeSet?) : View (context,
 //        Log.i(TAG,"${event?.action}")
         when(event?.action){
             MotionEvent.ACTION_DOWN->{
+                parent?.requestDisallowInterceptTouchEvent(true)
                 touchPoint.set(event.x.toInt(), event.y.toInt())
                 originalDragValue = dragValue
             }
@@ -126,6 +126,7 @@ class SlashToggleButton(context: Context, attrs: AttributeSet?) : View (context,
                 dragValue = originalDragValue + ((event.x - touchPoint.x).toDouble()/viewWidth*100).toInt()
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL->{
+                parent?.requestDisallowInterceptTouchEvent(false)
                 if(dragged) { // drag animation
 //                    Log.i(TAG,"drag animation")
                     with(ObjectAnimator.ofInt(this, "dragValue", dragValue, if (dragValue < (MAX_DRAG_VALUE / 2)) {

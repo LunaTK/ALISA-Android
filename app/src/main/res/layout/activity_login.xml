@@ -7,7 +7,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/background"
+        android:src="@drawable/background_login"
         android:scaleType="centerCrop"/>
 
     <LinearLayout
@@ -95,14 +95,14 @@
                     android:layout_weight="1"
                     />
 
-                <ImageView
+                <Button
                     android:clickable="true"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:adjustViewBounds="true"
                     android:onClick="login"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/btn_login"/>
+                    android:background="@drawable/btn_login"/>
 
                 <View
                     android:layout_width="0dp"

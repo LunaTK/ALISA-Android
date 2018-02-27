@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Transformation
-import com.lunatk.mybluetooth.R
+import com.lunatk.alisa.R
 
 /**
  * Created by LunaTK on 2018. 2. 18..
@@ -17,7 +17,7 @@ class ComponentStatusBar : View {
 
     companion object {
         private val animationDuration: Long = 1700
-        private val maxBlockNum = 12
+        val maxBlockNum = 10
         private val blockOffsetX = 1
         private val blockOffsetY = 1
         private val TAG = "PeriodStatusBar"

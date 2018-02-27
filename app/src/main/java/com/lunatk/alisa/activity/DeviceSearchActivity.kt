@@ -10,13 +10,14 @@ import android.os.Messenger
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
 import com.lunatk.alisa.adapter.BLEDeviceListAdapter
 import com.lunatk.alisa.bluetooth.AlisaService
 import com.lunatk.alisa.util.Utils
-import com.lunatk.mybluetooth.R
+import com.lunatk.alisa.R
 
 class DeviceSearchActivity : AppCompatActivity() {
 
@@ -51,6 +52,10 @@ class DeviceSearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_device_search)
 
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = ""
+
         bindService(Intent(this, AlisaService::class.java), mServiceConnection, Context.BIND_AUTO_CREATE)
 
         with(listView){
@@ -60,6 +65,16 @@ class DeviceSearchActivity : AppCompatActivity() {
 
         tvVehicleNumber.text = sharedPreferences.getString("device_name","연결된 차량이 없습니다")
 
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            android.R.id.home->{
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {

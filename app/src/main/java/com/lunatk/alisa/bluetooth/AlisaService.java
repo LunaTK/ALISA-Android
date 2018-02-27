@@ -31,7 +31,7 @@ import com.lunatk.alisa.activity.DeviceSearchActivity;
 import com.lunatk.alisa.network.RequestManager;
 import com.lunatk.alisa.util.Config;
 import com.lunatk.alisa.util.Utils;
-import com.lunatk.mybluetooth.R;
+import com.lunatk.alisa.R;
 
 import java.util.List;
 

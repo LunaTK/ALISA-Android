@@ -8,7 +8,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.view.View
 import android.widget.EditText
-import com.lunatk.mybluetooth.R
+import com.lunatk.alisa.R
 import android.view.WindowManager
 import android.widget.Button
 

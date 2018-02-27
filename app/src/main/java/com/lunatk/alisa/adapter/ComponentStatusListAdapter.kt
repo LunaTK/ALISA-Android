@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.lunatk.alisa.`object`.ComponentInfo
 import com.lunatk.alisa.customview.ComponentStatusBar
 
-import com.lunatk.mybluetooth.R
+import com.lunatk.alisa.R
 
 import java.util.ArrayList
 
@@ -33,9 +33,9 @@ class ComponentStatusListAdapter : RecyclerView.Adapter<ComponentStatusListAdapt
         holder.tv_mileage.text = "${componentInfo.currentMileage} km / ${componentInfo.maxMileage} km"
         holder.componentStatusbar.value = (componentInfo.currentMileage.toDouble() / componentInfo.maxMileage * 100).toInt()
         holder.iv_status.setImageResource(
-                when((componentInfo.currentMileage.toDouble() / componentInfo.maxMileage * 3).toInt()){
-                    0->R.drawable.status_red
-                    1->R.drawable.status_yellow
+                when((componentInfo.currentMileage.toDouble() / componentInfo.maxMileage * ComponentStatusBar.maxBlockNum).toInt()){
+                    in 0..1->R.drawable.status_red
+                    in 2..4->R.drawable.status_yellow
                     else->R.drawable.status_green
                 }
         )
@@ -48,6 +48,12 @@ class ComponentStatusListAdapter : RecyclerView.Adapter<ComponentStatusListAdapt
 
     fun addItem(newItem: ComponentInfo){
         list.add(newItem)
+    }
+
+    fun sortItems(){
+        list.sortBy{
+            it.currentMileage.toDouble()/it.maxMileage
+        }
     }
 
     inner class ViewHolder: RecyclerView.ViewHolder {

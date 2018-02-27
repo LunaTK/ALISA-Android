@@ -18,7 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.lunatk.alisa.util.Utils;
-import com.lunatk.mybluetooth.R;
+import com.lunatk.alisa.R;
 
 import java.util.ArrayList;
 import java.util.Collections;

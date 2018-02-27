@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.github.mikephil.charting.charts.BarChart
-import com.lunatk.mybluetooth.R
+import com.lunatk.alisa.R
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
@@ -25,7 +25,7 @@ class MileageGraphFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 //        return super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater?.inflate(R.layout.fragment_mileage_graph, container,false)
-        barChart = view?.findViewById(R.id.bar_chart)!!
+        barChart = view?.findViewById<BarChart>(R.id.bar_chart)!!
 
         setData(12, 50F)
 
@@ -71,7 +71,7 @@ class MileageGraphFragment: Fragment() {
             barChart.setData(data)
         }
         barChart.setPinchZoom(false)
-        barChart.invalidate()
+        barChart
         barChart.animateY(1000)
     }
 }

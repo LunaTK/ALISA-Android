@@ -14,7 +14,7 @@ import android.widget.LinearLayout
 import com.lunatk.alisa.fragment.DebugControlFragment
 import com.lunatk.alisa.fragment.DebugDisplayFragment
 import com.lunatk.alisa.fragment.MileageGraphFragment
-import com.lunatk.mybluetooth.R
+import com.lunatk.alisa.R
 import android.graphics.drawable.GradientDrawable
 import android.view.Menu
 import android.view.MenuItem
@@ -33,6 +33,10 @@ class MileageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mileage)
+
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = ""
 
         setupViewPager()
 
@@ -63,6 +67,9 @@ class MileageActivity : AppCompatActivity() {
         when(item?.itemId){
             R.id.action_settings -> {
                 MileageConfigDialog(this).show()
+            }
+            android.R.id.home->{
+                onBackPressed()
             }
         }
         return super.onOptionsItemSelected(item)

@@ -24,7 +24,7 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import com.lunatk.mybluetooth.R;
+import com.lunatk.alisa.R;
 
 public class CircularProgressBar extends AppCompatImageView {
 

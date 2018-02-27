@@ -11,7 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lunatk.mybluetooth.R;
+import com.lunatk.alisa.R;
 
 /**
  * Created by LunaTK on 2018. 2. 12..

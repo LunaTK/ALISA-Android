@@ -22,4 +22,8 @@
         <item>BEEP2</item>
         <item>BEEP3</item>
     </string-array>
+    <string-array name="alert_msg">
+        <item>사용자 지정</item>
+        <item>#user님의 차량에\n #type이(가) 발생하였습니다</item>
+    </string-array>
 </resources>

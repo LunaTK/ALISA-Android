@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.lunatk.alisa.network.RequestManager;
-import com.lunatk.mybluetooth.R;
+import com.lunatk.alisa.R;
 
 import java.util.concurrent.TimeUnit;
 

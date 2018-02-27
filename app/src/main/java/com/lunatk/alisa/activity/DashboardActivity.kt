@@ -6,18 +6,15 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.widget.TextView
 
-import com.lunatk.mybluetooth.R
+import com.lunatk.alisa.R
 import android.text.Spanned
 import android.text.style.RelativeSizeSpan
 import android.text.SpannableStringBuilder
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.lunatk.alisa.bluetooth.AlisaService
 import com.lunatk.alisa.customview.CircularProgressBar
 import com.lunatk.alisa.util.Utils
-import java.sql.Timestamp
 
 
 /**
@@ -29,23 +26,24 @@ class DashboardActivity : AppCompatActivity() {
     private val largeTextRatio = 1.5F
 
     private val tv_mileage by lazy{ findViewById(R.id.tv_mileage_value) as? TextView }
-    private val tv_driving_parking by lazy{ findViewById(R.id.tv_driving_parking_value) as? TextView }
-    private val tv_accident by lazy{ findViewById(R.id.tv_accident_value) as? TextView }
+//    private val tv_driving_parking by lazy{ findViewById(R.id.tv_driving_parking_value) as? TextView }
+//    private val tv_accident by lazy{ findViewById(R.id.tv_accident_value) as? TextView }
     private val tv_battery by lazy{ findViewById(R.id.tv_battery_value) as? TextView }
     private val tv_temperature by lazy{ findViewById(R.id.tv_temperature_value) as? TextView }
 
-    private val cp_change_period by lazy{findViewById(R.id.cp_change_period) as? CircularProgressBar }
-    private val cp_mileage by lazy{findViewById(R.id.cp_mileage) as? CircularProgressBar }
+    private val cp_battery by lazy{findViewById(R.id.cp_battery) as? CircularProgressBar }
+    private val cp_temperature by lazy{findViewById(R.id.cp_temperature) as? CircularProgressBar }
 
     private val toolbar by lazy{findViewById(R.id.toolbar) as? Toolbar}
 
-    private var mileage: Float = 0.0F
+    private var mileage: Int = 0
         set(value){
             field = value
             val spannableStringBuilder = SpannableStringBuilder("${field} Km")
             spannableStringBuilder.setSpan(RelativeSizeSpan(largeTextRatio), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             tv_mileage?.text = spannableStringBuilder
         }
+    /*
     private var pd_hour: Int = 0
         set(value){
             field = value
@@ -72,6 +70,7 @@ class DashboardActivity : AppCompatActivity() {
             spannableStringBuilder.append("건")
             tv_accident?.text = spannableStringBuilder
         }
+        */
     private var battery: Int = 0
         set(value) {
             field = value
@@ -79,6 +78,7 @@ class DashboardActivity : AppCompatActivity() {
             spannableStringBuilder.setSpan(RelativeSizeSpan(largeTextRatio), 0, spannableStringBuilder.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             spannableStringBuilder.append("%")
             tv_battery?.text = spannableStringBuilder
+            cp_battery?.setValue(value.toFloat())
         }
     private var temperature: Int = 0
         set(value) {
@@ -87,6 +87,7 @@ class DashboardActivity : AppCompatActivity() {
             spannableStringBuilder.setSpan(RelativeSizeSpan(largeTextRatio), 0, spannableStringBuilder.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             spannableStringBuilder.append("°C")
             tv_temperature?.text = spannableStringBuilder
+            cp_temperature?.setValue(value.toFloat())
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,15 +103,13 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     fun loadStatus(){
-        mileage = 21.4F
+        mileage = 32517
         temperature = 48
         battery = 32
-        pd_hour = 2
-        pd_minute = 37
-        accidentCount = 2
+//        pd_hour = 2
+//        pd_minute = 37
+//        accidentCount = 2
 
-        cp_change_period?.setValue(70f)
-        cp_mileage?.setValue(40f)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -136,7 +135,7 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     fun onAccidentClick(view: View){
-        startActivity(Intent(this, AccidentActivity::class.java))
+        startActivity(Intent(this, AccidentHistoryActivity::class.java))
     }
 
     fun onMileageClick(view: View){

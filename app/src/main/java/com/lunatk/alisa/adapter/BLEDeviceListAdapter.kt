@@ -12,7 +12,7 @@ import com.lunatk.alisa.`object`.ComponentInfo
 import com.lunatk.alisa.activity.DeviceSearchActivity
 import com.lunatk.alisa.customview.ComponentStatusBar
 
-import com.lunatk.mybluetooth.R
+import com.lunatk.alisa.R
 
 import java.util.ArrayList
 

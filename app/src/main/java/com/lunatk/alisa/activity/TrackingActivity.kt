@@ -2,9 +2,10 @@ package com.lunatk.alisa.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import android.view.View
 import com.google.android.gms.maps.GoogleMap
-import com.lunatk.mybluetooth.R
+import com.lunatk.alisa.R
 import com.google.android.gms.maps.MapFragment
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -26,7 +27,10 @@ class TrackingActivity: AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tracking)
+        supportActionBar?.title = ""
 
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val fragmentManager = fragmentManager
         val mapFragment = fragmentManager
@@ -55,6 +59,16 @@ class TrackingActivity: AppCompatActivity(), OnMapReadyCallback {
             map.moveCamera(CameraUpdateFactory.newLatLng(SEOUL))
             map.animateCamera(CameraUpdateFactory.zoomTo(18f))
         }
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            android.R.id.home->{
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     fun onMyLocation(view: View){

@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.lunatk.alisa.bluetooth.AlisaService;
-import com.lunatk.mybluetooth.R;
+import com.lunatk.alisa.R;
 
 import static com.lunatk.alisa.util.Utils.isServiceRunning;
 

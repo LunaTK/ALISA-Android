@@ -24,7 +24,7 @@ import com.lunatk.alisa.fragment.DebugDisplayFragment;
 import com.lunatk.alisa.network.RequestManager;
 import com.lunatk.alisa.util.Constants;
 import com.lunatk.alisa.util.Utils;
-import com.lunatk.mybluetooth.R;
+import com.lunatk.alisa.R;
 
 import static com.lunatk.alisa.util.Utils.removeLoginInfo;
 

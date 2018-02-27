@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.lunatk.alisa.network.OPCode;
 import com.lunatk.alisa.network.RequestManager;
 import com.lunatk.alisa.util.Utils;
-import com.lunatk.mybluetooth.R;
+import com.lunatk.alisa.R;
 
 /**
  * Created by LunaTK on 2018. 1. 18..
